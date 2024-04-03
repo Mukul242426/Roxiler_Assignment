@@ -62,7 +62,7 @@ export const getTransactions = async (req, res, next) => {
   }
 };
 
-export const getStatistics = async (req, res, next) => {
+export const getStatistics = async (req, res, next, calledFromAFunction=false) => {
   const month = parseInt(req.query.month);
   const pattern =
     month < 10 ? `-${month.toString().padStart(2, "0")}-` : `-${month}-`;
@@ -84,20 +84,32 @@ export const getStatistics = async (req, res, next) => {
         ? totalItemsUnSold + 0
         : totalItemsUnSold + 1;
     });
-    return res.status(200).json({
-      success: true,
-      message: "statistics fetched successfully",
-      totalSales,
-      totalItemsSold,
-      totalItemsUnSold,
-    });
+
+    if(!calledFromAFunction){
+      return res.status(200).json({
+        success: true,
+        message: "statistics fetched successfully",
+        totalSales,
+        totalItemsSold,
+        totalItemsUnSold,
+      });
+    }
+    else{
+      return {
+        success: true,
+        message: "statistics fetched successfully",
+        totalSales,
+        totalItemsSold,
+        totalItemsUnSold,
+      }
+    }
   } catch (error) {
     console.log(error);
     next(AppError(error.message, 404));
   }
 };
 
-export const getBarChartData = async (req, res, next) => {
+export const getBarChartData = async (req, res, next, calledFromAFunction=false) => {
   const month = parseInt(req.query.month);
   const pattern =
     month < 10 ? `-${month.toString().padStart(2, "0")}` : `-${month}-`;
@@ -118,7 +130,7 @@ export const getBarChartData = async (req, res, next) => {
   try {
     let results = [];
 
-      for(const range of priceRanges){
+    for (const range of priceRanges) {
       const count = await Product.countDocuments({
         dateOfSale: { $regex: pattern },
         price: { $gte: range.min, $lte: range.max },
@@ -128,13 +140,78 @@ export const getBarChartData = async (req, res, next) => {
         max: range.max,
         products: count,
       });
-    };
-    console.log(results)
+    }
+
+    if(!calledFromAFunction){
+      return res.status(200).json({
+        success: true,
+        message: "Bar chart data fetched successfully",
+        results,
+      });
+    }
+    else{
+      return {
+        success: true,
+        message: "Bar chart data fetched successfully",
+        results,
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    next(AppError(error.message, 404));
+  }
+};
+
+export const getPieChartData = async (req, res, next,calledFromAFunction=false) => {
+  const month = parseInt(req.query.month);
+  const pattern =
+    month < 10 ? `-${month.toString().padStart(2, "0")}` : `-${month}-`;
+
+  try {
+    const categories = await Product.distinct("category");
+    let results = [];
+    for (const category of categories) {
+      const count = await Product.countDocuments({
+        dateOfSale: { $regex: pattern },
+        category,
+      });
+      results.push({
+        [category]: count,
+      });
+    }
+
+    if(!calledFromAFunction){
+      return res.status(200).json({
+        success: true,
+        message: "Pie chart data fetched successfully",
+        results,
+      });
+    }
+    else{
+      return {
+        success: true,
+        message: "Pie chart data fetched successfully",
+        results,
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    next(AppError(error.message, 404));
+  }
+};
+
+export const getCombinedData = async (req, res, next) => {
+  try {
+    const statistics=await getStatistics(req,res,next,true)
+    const barChartData=await getBarChartData(req,res,next,true)
+    const pieChartData=await getPieChartData(req,res,next,true);
     res.status(200).json({
-      success: true,
-      message: "Bar chart data fetched successfully",
-      results
-    });
+      sucess:true,
+      statistics,
+      barChartData,
+      pieChartData
+    })
+
   } catch (error) {
     console.log(error);
     next(AppError(error.message, 404));
