@@ -107,6 +107,7 @@ function Dashboard() {
 
   return (
     <div className={styles.dashboard}>
+      <div className={styles.dashboard_heading}>Transactions Dashboard</div>
       <div className={styles.search_container}>
         <input
           type="text"
