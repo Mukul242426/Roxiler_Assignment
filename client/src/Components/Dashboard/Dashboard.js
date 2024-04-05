@@ -4,12 +4,14 @@ import axios from "axios";
 import styles from "./Dashboard.module.css";
 import Table from "../Table/Table";
 import Statistics from "../Statistics/Statistics";
+import Chart from "../Chart/Chart";
 
 function Dashboard() {
   const [searchText, setSearchText] = useState("");
   const [month, setMonth] = useState(3);
   const [transactions, setTransactions] = useState({});
   const [stats, setStats] = useState({});
+  const [barChartData, setBarChartData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const selectedMonths = [
     {
@@ -85,16 +87,14 @@ function Dashboard() {
         });
         console.log(response);
         setStats(response.data.results[0]);
+        console.log("bar chart", response.data.results[1].results);
+        setBarChartData(response.data.results[1].results);
       } catch (error) {
         console.log(error);
       }
     };
     getCombinedData();
   }, [month]);
-
-  useEffect(() => {
-    console.log("transactions", transactions);
-  }, [transactions]);
 
   const handleMonth = (e) => {
     const selectedMonthName = e.target.value;
@@ -139,12 +139,12 @@ function Dashboard() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-      <Statistics selectedMonths={selectedMonths} stats={stats} month={month}/>
-      <div className={styles.charts_container}>
-        <div className={styles.charts_heading}>
-          
-        </div>
-      </div>
+      <Statistics selectedMonths={selectedMonths} stats={stats} month={month} />
+      <Chart
+        selectedMonths={selectedMonths}
+        month={month}
+        barChartData={barChartData}
+      />
     </div>
   );
 }

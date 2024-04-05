@@ -1,0 +1,13 @@
+.charts_container {
+  width: 100%;
+  display:flex;
+  flex-direction:column;
+  gap:2rem;
+}
+
+.charts_heading {
+  display: flex;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 800;
+}

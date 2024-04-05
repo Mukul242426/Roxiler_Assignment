@@ -10,7 +10,7 @@
   padding: 4rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   gap: 4rem;
 }
 
@@ -54,10 +54,3 @@
   outline: none;
 }
 
-.charts_container{
-  width:100%;
-}
-
-.charts_heading{
-  
-}
