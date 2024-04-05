@@ -25,7 +25,7 @@ export const getTransactions = async (req, res, next) => {
   const { searchText } = req.query;
   const { currentPage = 1 } = req.query;
   const searchPrice = parseFloat(searchText);
-  console.log(currentPage);
+  // console.log(currentPage);
 
   try {
     let transactions;
@@ -43,11 +43,11 @@ export const getTransactions = async (req, res, next) => {
       } else {
         query["price"] = searchPrice;
       }
-      console.log(query);
+      // console.log(query);
       transactions = await Product.find(query)
 
     } else {
-      console.log(query);
+      // console.log(query);
       transactions = await Product.find(query)
         .skip((currentPage - 1) * 10)
         .limit(10);

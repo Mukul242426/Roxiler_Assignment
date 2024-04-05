@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { FRONTEND_URL } from "../utils/utils";
+import { FRONTEND_URL } from "../../utils/utils";
 import axios from "axios";
 import styles from "./Dashboard.module.css";
-import toast from 'react-hot-toast'
+import Table from "../Table/Table";
+import Statistics from "../Statistics/Statistics";
 
 function Dashboard() {
   const [searchText, setSearchText] = useState("");
   const [month, setMonth] = useState(3);
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState({});
+  const [stats, setStats] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const selectedMonths = [
     {
@@ -75,6 +77,25 @@ function Dashboard() {
     getData();
   }, [month, searchText, currentPage]);
 
+  useEffect(() => {
+    const getCombinedData = async () => {
+      try {
+        const response = await axios.get(`${FRONTEND_URL}/all`, {
+          params: { month },
+        });
+        console.log(response);
+        setStats(response.data.results[0]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCombinedData();
+  }, [month]);
+
+  useEffect(() => {
+    console.log("transactions", transactions);
+  }, [transactions]);
+
   const handleMonth = (e) => {
     const selectedMonthName = e.target.value;
     const selectedMonth = selectedMonths.find(
@@ -83,26 +104,6 @@ function Dashboard() {
     setMonth(selectedMonth.id);
     setCurrentPage(1);
   };
-
-  const handlePrevious=()=>{
-    if(currentPage>1){
-        setCurrentPage(currentPage-1)
-    }
-    else{
-        toast.error('This is the first page')
-    }
-
-  }
-
-  const handleNext=()=>{
-    console.log(transactions?.totalPages)
-    if(currentPage<transactions?.totalPages){
-        setCurrentPage(currentPage+1);
-    }
-    else{
-        toast.error('This is the last page')
-    }
-  }
 
   return (
     <div className={styles.dashboard}>
@@ -133,53 +134,15 @@ function Dashboard() {
           ))}
         </select>
       </div>
-      <div className={styles.table_container}>
-        <table className={styles.analysis_table}>
-          <thead>
-            <tr className={styles.table_heading}>
-              <th>Id</th>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Category</th>
-              <th>Sold</th>
-              <th>Image</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions?.transactions?.length===0 ? (
-                <tr className={styles.no_transactions} style={{textAlign:"center"}}>
-                    <td colspan="7">No transactions found</td>
-                </tr>
-               ):(transactions?.transactions?.map((transaction, index) => (
-              <tr key={transaction?.id} className={styles.transaction_analysis}>
-                <td>{transaction?.id}</td>
-                <td className={styles.scrollable}>{transaction?.title}</td>
-                <td className={styles.scrollable}>
-                  {transaction?.description}
-                </td>
-                <td>{transaction?.price}</td>
-                <td>{transaction?.category}</td>
-                <td>{transaction?.sold ? "Yes" : "No"}</td>
-                <td>
-                  <img
-                    src={transaction?.image}
-                    alt="product"
-                    className={styles.product_pic}
-                  />
-                </td>
-              </tr>)
-            ))}
-          </tbody>
-        </table>
-        <div className={styles.table_footer}>
-          <div>Page No: {currentPage}</div>
-          <div className={styles.btns}>
-            <div className={styles.previous} onClick={handlePrevious}>Previous</div>
-            <div>-</div>
-            <div className={styles.next} onClick={handleNext}>Next</div>
-          </div>
-          <div>Per Page: 10</div>
+      <Table
+        transactions={transactions}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+      <Statistics selectedMonths={selectedMonths} stats={stats} month={month}/>
+      <div className={styles.charts_container}>
+        <div className={styles.charts_heading}>
+          
         </div>
       </div>
     </div>

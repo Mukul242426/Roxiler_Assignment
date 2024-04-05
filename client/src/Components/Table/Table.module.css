@@ -1,0 +1,83 @@
+.table_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.analysis_table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table_heading {
+  background-color: #5076ff;
+  color: white;
+  /* font-weight:800; */
+}
+
+.table_heading th {
+  padding: 0.5rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid black;
+}
+
+.transaction_analysis {
+  background-color: #b3c4ff;
+}
+
+.transaction_analysis tr {
+  height: 2rem;
+  border: 2px solid black;
+}
+
+.transaction_analysis td {
+  padding: 0.75rem;
+  font-size: 1rem;
+  /* font-weight: 600; */
+  border: 2px solid black;
+  text-align: left;
+}
+
+.product_pic {
+  width: 5rem;
+  height: 4rem;
+}
+
+.table_footer {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+}
+
+.btns {
+  display: flex;
+  gap: 1rem;
+}
+
+.previous,
+.next {
+  cursor: pointer;
+}
+
+.no_transactions {
+  background-color: #b3c4ff;
+}
+
+.no_transactions tr {
+  height: 2rem;
+  border: 2px solid black;
+}
+
+.no_transactions td {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid black;
+  text-align: center;
+}
+
+.table_footer{
+  font-weight:normal;
+}

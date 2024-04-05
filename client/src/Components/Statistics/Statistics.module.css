@@ -1,0 +1,30 @@
+.statistic_container{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+  }
+  
+  .statistics{
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+  }
+  
+  .stats_heading{
+    font-size:1.75rem;
+    font-weight:800;
+  }
+  
+  .stats_box{
+    display:flex;
+    flex-direction:column;
+    gap:1.5rem;
+    background-color: #b3c4ff;
+    border-radius:1rem;
+    padding:1rem;
+  }
+  
+  .sales{
+    display:flex;
+    justify-content:space-between;
+  }
