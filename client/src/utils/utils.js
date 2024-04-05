@@ -1,1 +1,1 @@
-export const FRONTEND_URL='http://localhost:4000/api/v1/products'
+export const FRONTEND_URL='https://roxiler-assignment-3r4l.onrender.com/api/v1/products'
