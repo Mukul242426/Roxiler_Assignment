@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -27,24 +27,28 @@ function Chart({ selectedMonths, month, barChartData }) {
         }
       </div>
       <ResponsiveContainer width="100%" height={400}>
-        <BarChart
-          width={500}
-          height={300}
-          data={chartData}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="range" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="items" fill="#8884d8" />
-        </BarChart>
+        {barChartData.length === 0 ? (
+          <div className={styles.loading}>Loading..</div>
+        ) : (
+          <BarChart
+            width={500}
+            height={300}
+            data={chartData}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="range" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="items" fill="#8884d8" />
+          </BarChart>
+        )}
       </ResponsiveContainer>
     </div>
   );

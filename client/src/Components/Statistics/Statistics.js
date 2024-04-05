@@ -16,17 +16,17 @@ function Statistics({selectedMonths,stats,month}) {
         <div className={styles.sales}>
           Total Sales
           <div>
-            {stats?.totalSales  ? (Number.isInteger(stats?.totalSales) ? stats?.totalSales: stats?.totalSales.toFixed(2)): ""}
+            {stats?.totalSales  ? (Number.isInteger(stats?.totalSales) ? stats?.totalSales: stats?.totalSales.toFixed(2)): "Loading.."}
           </div>
         </div>
 
         <div className={styles.sales}>
           Total Items Sold
-          <div>{stats?.totalItemsSold}</div>
+          <div>{stats?.totalItemsSold ? stats?.totalItemsSold :'Loading..'}</div>
         </div>
         <div className={styles.sales}>
           Total Items Not Sold
-          <div>{stats?.totalItemsUnSold}</div>
+          <div>{stats?.totalItemsUnSold ? stats?.totalItemsUnSold:'Loading..'}</div>
         </div>
       </div>
     </div>

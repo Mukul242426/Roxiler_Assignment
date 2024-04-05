@@ -8,11 +8,14 @@
     display:flex;
     flex-direction:column;
     gap:2rem;
+    width:17rem; /*width increased*/
   }
   
   .stats_heading{
     font-size:1.75rem;
     font-weight:800;
+    display:flex; /*flexbox*/
+    justify-content:center; /*center*/
   }
   
   .stats_box{
