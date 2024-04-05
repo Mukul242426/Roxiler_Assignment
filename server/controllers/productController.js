@@ -230,7 +230,7 @@ export const getCombinedData = async (req, res, next) => {
     responses.forEach((response) => {
       results.push(response);
     });
-    console.log(responses);
+    // console.log(responses);
 
     return res.status(200).json({
       success: true,
